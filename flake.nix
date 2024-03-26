@@ -22,7 +22,7 @@
             home-manager.useUserPackages = true;
             home-manager.users.hannah = ./home;
           }
-          (./loadouts + "/${loadout}.nix")
+          (./nixos + "/${loadout}.nix")
           (./machines + "/${machine}")
         ];
         specialArgs = {
