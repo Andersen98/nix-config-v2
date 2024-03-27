@@ -1,14 +1,15 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, lib,... }:
 
 {
   imports =  [
-    ./neovim
-    ./bash.nix
-    ./fish.nix
-    ./kitty.nix
-    ./starship-pastel-preset.nix
-    ./texlive.nix
+    ./components/neovim
+    ./components/bash.nix
+    ./components/fish.nix
+    ./components/kitty.nix
+    ./components/starship-pastel-preset.nix
+    ./components/texlive.nix
   ];
+  
 
   # This config was copied and modified from the following
   # https://nixos-and-flakes.thiscute.world/nixos-with-flakes/start-using-home-manager
