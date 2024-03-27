@@ -1,4 +1,15 @@
-{pkgs, ...}:
+{pkgs,lib, ...}:
+let
+fromGitHub = {rev, ref, repo}: pkgs.vimUtils.buildVimPlugin {
+    pname = "${lib.strings.sanitizeDerivationName repo}";
+    version = ref;
+    src = builtins.fetchGit {
+      url = "https://github.com/${repo}.git";
+      ref = ref;
+      rev = rev;
+    };
+  };
+in
 {
   programs.neovim = {
     viAlias = true;
@@ -6,6 +17,43 @@
     enable = true;
     extraLuaConfig = builtins.readFile ./extra-config.lua;
     plugins = with pkgs.vimPlugins; [
+      zen-mode-nvim
+      {
+        plugin = neorg-telescope;
+        config = ''
+        require("nvim-treesitter.configs").setup {
+                    highlight = {
+                      enable = true,
+                    }
+                  }
+        '';
+        type = "lua";
+      }
+      nvim-treesitter.withAllGrammars
+      (fromGitHub {
+        repo = "nvim-neorg/lua-utils.nvim";
+        rev = "e565749421f4bbb5d2e85e37c3cef9d56553d8bd";
+        ref = "main";
+        }
+      )
+      (fromGitHub {
+        repo = "nvim-neotest/nvim-nio";
+        rev = "33c62b3eadd8154169e42144de16ba4db6784bec";
+        ref = "master";
+      })
+      nui-nvim
+      plenary-nvim
+      {
+        plugin = neorg;
+        config = ''
+        require("neorg").setup {
+          load = {
+            ["core.defaults"] = {}
+          }
+        }
+        '';
+        type = "lua";
+      }
       { plugin = neo-tree-nvim;
         config = ''
         vim.keymap.set('n', '<Leader>t', '<cmd>Neotree toggle<cr>')
