@@ -16,4 +16,24 @@
     enable = true;
     wrapperFeatures.gtk = true;
   };
+
+
+  ########## OPTIONAL #############
+
+    # kanshi systemd service
+  systemd.user.services.kanshi = {
+    description = "kanshi daemon";
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = ''${pkgs.kanshi}/bin/kanshi -c kanshi_config_file'';
+    };
+  };
+  
+  # Control Brightness
+  programs.light.enable = true;
+  
+  # Realtime Performance
+  security.pam.loginLimits = [
+    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+  ];
 }

@@ -3,8 +3,7 @@
     lenovo-thinkpad-x270
     ./hardware-configuration.nix
     ../components/bluetooth.nix
-    ../components/pipewire-pulse.nix
-    ../components/hannah.nix
+    ../components/pulseaudio.nix
   ];
 
   

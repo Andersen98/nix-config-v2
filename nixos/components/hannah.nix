@@ -12,5 +12,6 @@
       "systemd-journal"
     ]; 
   };
+  users.groups.hannah = {};
   
 } 

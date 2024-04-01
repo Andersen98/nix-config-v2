@@ -8,11 +8,12 @@
     ./components/kitty.nix
     ./components/starship-pastel-preset.nix
     ./components/texlive.nix
+    ./components/foot.nix
   ];
   
 
   # This config was copied and modified from the following
-  # https://nixos-and-flakes.thiscute.world/nixos-with-flakes/start-using-home-manager
+  # nixos-and-flakes.thiscute.world/nixos-with-flakes/start-using-home-manager
   home.username = "hannah";
   home.homeDirectory = "/home/hannah";
 
@@ -32,7 +33,12 @@
   #   recursive = true;   # link recursively
   #   executable = true;  # make all files executable
   # };
-
+  home.file.".config/sway" = {
+    source = ./components/sway;
+    recursive = true;
+    executable = false;
+  };
+  
   # set cursor size and dpi for 4k monitor
   xresources.properties = {
     "Xcursor.size" = 16;
@@ -71,7 +77,7 @@
     gh #github command line utility
     ripgrep # recursively searches directories for a regex pattern
     jq # A lightweight and flexible command-line JSON processor
-    yq-go # yaml processor https://github.com/mikefarah/yq
+    yq-go # yaml processor github.com/mikefarah/yq
     eza # A modern replacement for ‘ls’
     fzf # A command-line fuzzy finder
     just # A a command runner

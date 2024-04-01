@@ -8,7 +8,7 @@
   outputs = {self, nixpkgs, nixos-hardware,home-manager,...}@inputs:
   let
     inherit (nixpkgs) lib;
-    genConfiguration =  { loadout, machine, homeModule ? ./home}:
+    genConfiguration =  { loadout, machine}:
     {
       system = "x86_64-linux";
       "${machine}-${loadout}" = lib.nixosSystem {
@@ -20,7 +20,7 @@
             home-manager.extraSpecialArgs = { };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.hannah = homeModule;
+            home-manager.users.hannah = ./home;
           }
           (./nixos + "/${loadout}.nix")
           (./machines + "/${machine}")
@@ -40,7 +40,6 @@
       // genConfiguration {
         machine = "lenovo-x270"; 
         loadout = "sway-standard";
-        homeModule = ./home/with-sway.nix;
       };
   };
 }
