@@ -8,6 +8,10 @@
   outputs = {self, nixpkgs, nixos-hardware,home-manager,...}@inputs:
   let
     inherit (nixpkgs) lib;
+    allMachines = [ "lenovo-x270" "x570" ];
+    allLoadouts = [ "sway-standard" "plasma5-standard" "plasma6-standard" ];
+    allCombinations = lib.attrsets.cartesianProductOfSets { machine = allMachines; loadout = allLoadouts; };
+
     genConfiguration =  { loadout, machine}:
     {
       system = "x86_64-linux";
@@ -35,11 +39,6 @@
     };
   in
   {
-    nixosConfigurations = genConfiguration { machine = "lenovo-x270"; loadout = "plasma5-standard";}
-      // genConfiguration { machine = "lenovo-x270"; loadout = "plasma6-standard";}
-      // genConfiguration {
-        machine = "lenovo-x270"; 
-        loadout = "sway-standard";
-      };
+    nixosConfigurations = lib.attrsets.mergeAttrsList (map genConfiguration allCombinations);
   };
 }
