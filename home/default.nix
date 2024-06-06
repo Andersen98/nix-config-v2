@@ -62,6 +62,8 @@
     # media
     obs-studio
     vlc
+    blender
+    inkscape
 
     # xorg
     xclip

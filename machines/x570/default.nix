@@ -11,6 +11,7 @@
       ../components/nvidia.nix
       ../components/pulseaudio.nix
       ../components/bluetooth.nix
+      ../components/cuda-fhs.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

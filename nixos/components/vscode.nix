@@ -7,6 +7,7 @@
       vscode-extensions.jnoortheen.nix-ide
       ms-python.python
       ms-azuretools.vscode-docker
+      svelte.svelte-vscode
       ms-vscode-remote.remote-ssh
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
