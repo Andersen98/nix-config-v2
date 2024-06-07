@@ -6,6 +6,9 @@
 
 ### Variables
 #
+
+#font
+set $font 'DejaVu Sans Mono 16'
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 # Home row direction keys, like vim
@@ -18,7 +21,7 @@ set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | wmenu | xargs swaymsg exec --
+set $menu dmenu_path | wmenu -f $font | xargs swaymsg exec --
 
 ### Output configuration
 #
