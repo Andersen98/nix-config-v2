@@ -31,6 +31,25 @@
       g = "git";
       "..." = "cd ../../";
     };
+    functions = {
+      develope = {
+        wraps = "nix develop";
+        body = "env ANY_NIX_SHELL_PKGS=(basename (pwd))\"#\"(git describe --tags --dirty) (type -P nix) develop --command fish";
+        description = "Wrap nix develop to run with fish";
+      };
+      "todays-playground" = {
+        description = "Make a playground directory and cd to it";
+        body = ''
+           set -f today (date +%B-%d-%Y | tr '[:upper:]' '[:lower:]')
+           if test -d ~/playground/$today
+               cd ~/playground/$today
+           else
+               mkdir -p ~/playground/$today
+               cd  ~/playground/$today
+           end
+        '';
+      };
+    };
   };
 
 }
