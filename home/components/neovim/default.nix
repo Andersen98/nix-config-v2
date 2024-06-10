@@ -15,7 +15,7 @@ in
     viAlias = true;
     vimAlias = true;
     enable = true;
-    #package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     extraLuaConfig = builtins.readFile ./extra-config.lua;
     plugins = with pkgs.vimPlugins; [
       zen-mode-nvim
