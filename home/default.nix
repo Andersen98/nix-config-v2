@@ -10,12 +10,13 @@
     ./components/texlive.nix
     ./components/foot.nix
   ];
-  
+ 
 
   # This config was copied and modified from the following
   # nixos-and-flakes.thiscute.world/nixos-with-flakes/start-using-home-manager
   home.username = "hannah";
   home.homeDirectory = "/home/hannah";
+
 
   # encode the file content in nix configuration file directly
   # home.file.".xxx".text = ''

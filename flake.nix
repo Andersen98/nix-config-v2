@@ -4,32 +4,34 @@
     # the nixConfig here only affects the flake itself, not the system configuration!
   nixConfig = {
     # override the default substituters
-    substituters = [
-
-      "https://cache.nixos.org"
-
+    extra-substituters = [
       # nix community's cache server
+      "https://nix-community.cachix.org"
+
+      # nix community's cache server for cuda
       "https://cuda-maintainers.cachix.org"
     ];
-    trusted-public-keys = [
+    extra-trusted-public-keys = [
+      #nix-community cache server public key
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       #  cuda-maintainers's cache server public key
       "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     ];
   };
 
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = {self, nixpkgs, nixos-hardware,home-manager,...}@inputs:
   let
     inherit (nixpkgs) lib;
-    allMachines = [ "lenovo-x270" "x570" ];
-    allLoadouts = [ "sway-standard" "plasma5-standard" "plasma6-standard" ];
+    allMachines = [ "lenovo-x270" "x570" "all-hardware" ];
+    allLoadouts = [ "sway" "plasma5" "plasma6" ];
     allCombinations = lib.attrsets.cartesianProductOfSets { machine = allMachines; loadout = allLoadouts; };
-
+    
     genConfiguration =  { loadout, machine}:
     {
       system = "x86_64-linux";
@@ -38,13 +40,25 @@
           {
             # given the users in this list the right to specify additional substituters via:
             #    1. `nixConfig.substituters` in `flake.nix`
-            nix.settings.trusted-users = [ "root" "hannah" ];
+            nix.settings.trusted-users = [ "hannah" ];
+
+            nix.settings = {
+              substituters = [
+            
+                "https://cache.nixos.org"
+              ];
+
+              trusted-public-keys = [
+                # the default public key of cache.nixos.org, it's built-in, no need to add it here
+                "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+              ];
+            };
           }
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = { };
+            home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.hannah = ./home;
@@ -55,8 +69,11 @@
         specialArgs = {
           hostname = "${machine}-${loadout}";
             inherit
+              machine
+              loadout
               nixos-hardware
-              home-manager;
+              home-manager
+              ;
         };
       };
     };

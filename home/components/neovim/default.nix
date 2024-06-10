@@ -1,6 +1,6 @@
-{pkgs,lib, ...}:
+{pkgs,lib, inputs,...}:
 let
-fromGitHub = {rev, ref, repo}: pkgs.vimUtils.buildVimPlugin {
+  fromGitHub = {rev, ref, repo}: pkgs.vimUtils.buildVimPlugin {
     pname = "${lib.strings.sanitizeDerivationName repo}";
     version = ref;
     src = builtins.fetchGit {
@@ -15,6 +15,7 @@ in
     viAlias = true;
     vimAlias = true;
     enable = true;
+    #package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     extraLuaConfig = builtins.readFile ./extra-config.lua;
     plugins = with pkgs.vimPlugins; [
       zen-mode-nvim
