@@ -1,4 +1,4 @@
-{ pkgs, lib,... }:
+{ pkgs, lib,inputs,... }:
 
 {
   imports =  [
@@ -16,6 +16,7 @@
   # nixos-and-flakes.thiscute.world/nixos-with-flakes/start-using-home-manager
   home.username = "hannah";
   home.homeDirectory = "/home/hannah";
+
 
 
   # encode the file content in nix configuration file directly
@@ -50,6 +51,9 @@
   home.packages = with pkgs; [
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them
+
+    # devenv https://devenv.sh
+    devenv
 
     neofetch
 
