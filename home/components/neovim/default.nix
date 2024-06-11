@@ -1,61 +1,65 @@
-{pkgs,lib, inputs,...}:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
-  fromGitHub = {rev, ref, repo}: pkgs.vimUtils.buildVimPlugin {
-    pname = "${lib.strings.sanitizeDerivationName repo}";
-    version = ref;
-    src = builtins.fetchGit {
-      url = "https://github.com/${repo}.git";
-      ref = ref;
-      rev = rev;
+  fromGitHub =
+    {
+      rev,
+      ref,
+      repo,
+    }:
+    pkgs.vimUtils.buildVimPlugin {
+      pname = "${lib.strings.sanitizeDerivationName repo}";
+      version = ref;
+      src = builtins.fetchGit {
+        url = "https://github.com/${repo}.git";
+        ref = ref;
+        rev = rev;
+      };
     };
-  };
 in
 {
-  
-   
-    programs.neovim = {
+
+  programs.neovim = rec {
     viAlias = true;
     vimAlias = true;
     enable = true;
     extraLuaConfig = builtins.readFile ./extra-config.lua;
-    extraPackages = with pkgs; [ cargo gcc git curl ];
-    extraLuaPackages = luaPkgs: with luaPkgs; [ luarocks rocks-nvim ];
+    extraPackages = with pkgs; [ gcc gnutar curl ];
     package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     plugins = with pkgs.vimPlugins; [
       {
-        plugin = neorg;
-        config = ''
-        require("neorg").setup {
-          load = {
-            ["core.defaults"] = {},
-            ["core.concealer"] = {},
-          }
-        }
-        '';
-        type = "lua";      
-      }
-      neorg-telescope
-      { 
         plugin = nvim-treesitter.withAllGrammars;
         config = ''
-        require("nvim-treesitter.configs").setup {
-          highlight = {
-            enable = true,
+          require("nvim-treesitter.configs").setup {
+            highlight = {
+              enable = true,
+            }
           }
-        }
         '';
         type = "lua";
       }
+      {
+        plugin = (fromGitHub {
+          repo="nix-community/tree-sitter-nix";
+          rev="b3cda619248e7dd0f216088bd152f59ce0bbe488"; 
+          ref="master";
+        });
+      }
       zen-mode-nvim
-      { plugin = neo-tree-nvim;
+      {
+        plugin = neo-tree-nvim;
         config = ''
-        vim.keymap.set('n', '<Leader>t', '<cmd>Neotree toggle<cr>')
-        vim.keymap.set('n', '<Leader>b', '<cmd>Neotree toggle show buffers right<cr>')
-        vim.keymap.set('n', '<Leader>s', '<cmd>Neotree float git_status<cr>')
-        -- nnoremap | :Neotree reveal<cr>
-        -- nnoremap gd :Neotree float reveal_file=<cfile> reveal_force_cwd<cr>
-        -- nnoremap <leader>b :Neotree toggle show buffers right<cr>
-        -- nnoremap <leader>s :Neotree float git_status<cr>
+          vim.keymap.set('n', '<Leader>t', '<cmd>Neotree toggle<cr>')
+          vim.keymap.set('n', '<Leader>b', '<cmd>Neotree toggle show buffers right<cr>')
+          vim.keymap.set('n', '<Leader>s', '<cmd>Neotree float git_status<cr>')
+          vim.keymap.set('n', '<cr>', '<cmd>Neotree reveal<cr>')
+          vim.keymap.set('n', 'gd', '<cmd>Neotree float reveal_file=<cfile> reveal_force_cwd<cr>')
+          vim.keymap.set('n', '<leader>b', '<cmd>Neotree toggle show buffers right<cr>')
+          vim.keymap.set('n', '<leader>s', '<cmd>Neotree float git_status<cr>')
         '';
         type = "lua";
       }
@@ -70,4 +74,3 @@ in
     ];
   };
 }
-

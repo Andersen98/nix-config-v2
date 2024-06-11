@@ -1,4 +1,4 @@
-{ pkgs, ...}:
+{ pkgs, ... }:
 {
   programs.fish = {
     enable = true;
@@ -40,13 +40,13 @@
       "todays-playground" = {
         description = "Make a playground directory and cd to it";
         body = ''
-           set -f today (date +%B-%d-%Y | tr '[:upper:]' '[:lower:]')
-           if test -d ~/playground/$today
-               cd ~/playground/$today
-           else
-               mkdir -p ~/playground/$today
-               cd  ~/playground/$today
-           end
+          set -f today (date +%B-%d-%Y | tr '[:upper:]' '[:lower:]')
+          if test -d ~/playground/$today
+              cd ~/playground/$today
+          else
+              mkdir -p ~/playground/$today
+              cd  ~/playground/$today
+          end
         '';
       };
     };

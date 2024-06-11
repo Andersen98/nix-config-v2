@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   environment.systemPackages = with pkgs; [
     grim # screenshot functionality
@@ -17,10 +22,9 @@
     wrapperFeatures.gtk = true;
   };
 
-
   ########## OPTIONAL #############
 
-    # kanshi systemd service
+  # kanshi systemd service
   systemd.user.services.kanshi = {
     description = "kanshi daemon";
     serviceConfig = {
@@ -28,12 +32,17 @@
       ExecStart = ''${pkgs.kanshi}/bin/kanshi -c kanshi_config_file'';
     };
   };
-  
+
   # Control Brightness
   programs.light.enable = true;
-  
+
   # Realtime Performance
   security.pam.loginLimits = [
-    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+    {
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }
   ];
 }

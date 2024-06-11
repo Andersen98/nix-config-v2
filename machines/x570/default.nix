@@ -2,17 +2,22 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../components/nvidia.nix
-      ../components/pulseaudio.nix
-      ../components/bluetooth.nix
-      ../components/cuda-fhs.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../components/nvidia.nix
+    ../components/pulseaudio.nix
+    ../components/bluetooth.nix
+    ../components/cuda-fhs.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -21,7 +26,7 @@
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "America/Denver";
@@ -41,11 +46,9 @@
   # Enable the X11 windowing system.
   #services.xserver.enable = true;
 
-
   # Enable the Plasma 5 Desktop Environment.
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.desktopManager.plasma5.enable = true;
-  
 
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
@@ -122,4 +125,3 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-

@@ -1,7 +1,12 @@
-{ pkgs, lib,inputs,... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 {
-  imports =  [
+  imports = [
     ./components/neovim
     ./components/bash.nix
     ./components/fish.nix
@@ -10,14 +15,11 @@
     ./components/texlive.nix
     ./components/foot.nix
   ];
- 
 
   # This config was copied and modified from the following
   # nixos-and-flakes.thiscute.world/nixos-with-flakes/start-using-home-manager
   home.username = "hannah";
   home.homeDirectory = "/home/hannah";
-
-
 
   # encode the file content in nix configuration file directly
   # home.file.".xxx".text = ''
@@ -40,7 +42,7 @@
     recursive = true;
     executable = false;
   };
-  
+
   # set cursor size and dpi for 4k monitor
   xresources.properties = {
     "Xcursor.size" = 16;
@@ -58,7 +60,7 @@
     neofetch
 
     #fonts
-    nerdfonts 
+    nerdfonts
 
     # internet
     firefox
@@ -81,7 +83,7 @@
 
     # utils
     fasd # command line prodcivity booster
-    gh #github command line utility
+    gh # github command line utility
     ripgrep # recursively searches directories for a regex pattern
     jq # A lightweight and flexible command-line JSON processor
     yq-go # yaml processor github.com/mikefarah/yq
@@ -92,12 +94,12 @@
     # networking tools
     mtr # A network diagnostic tool
     iperf3
-    dnsutils  # `dig` + `nslookup`
+    dnsutils # `dig` + `nslookup`
     ldns # replacement of `dig`, it provide the command `drill`
     aria2 # A lightweight multi-protocol & multi-source command-line download utility
     socat # replacement of openbsd-netcat
     nmap # A utility for network discovery and security auditing
-    ipcalc  # it is a calculator for the IPv4/v6 addresses
+    ipcalc # it is a calculator for the IPv4/v6 addresses
 
     # misc
     cowsay
@@ -121,7 +123,7 @@
     # productivity
     glow # markdown previewer in terminal
 
-    btop  # replacement of htop/nmon
+    btop # replacement of htop/nmon
     iotop # io monitoring
     iftop # network monitoring
 
@@ -159,10 +161,7 @@
       selection.save_to_clipboard = true;
     };
   };
-    
 
-
-   
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new home Manager release introduces backwards

@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 {
   # Enable the X11 windowing system.
@@ -12,7 +17,7 @@
     enable = true;
     pinentryPackage = lib.mkForce pkgs.pinentry-qt;
   };
- 
+
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
@@ -24,5 +29,3 @@
   services.xserver.displayManager.autoLogin.user = "hannah";
 
 }
-
-

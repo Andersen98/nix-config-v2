@@ -1,5 +1,1 @@
-{
-  imports = [
-    <nixpkgs/nixos/modules/profiles/all-hardware.nix>
-  ];
-}
+{ imports = [ <nixpkgs/nixos/modules/profiles/all-hardware.nix> ]; }
