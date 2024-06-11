@@ -7,15 +7,5 @@ vim.cmd([[
   filetype plugin on
   filetype indent on
 ]])
-require("nvim-treesitter.configs").setup {
-  highlight = {
-    enable = true,
-  }
-}
 
-require("neorg").setup {
-  load = {
-    ["core.defaults"] = {},
-    ["core.concealer"] = {}
-  }
-}
+

@@ -11,50 +11,42 @@ let
   };
 in
 {
-  programs.neovim = {
+  
+   
+    programs.neovim = {
     viAlias = true;
     vimAlias = true;
     enable = true;
-    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     extraLuaConfig = builtins.readFile ./extra-config.lua;
+    extraPackages = with pkgs; [ cargo gcc git curl ];
+    extraLuaPackages = luaPkgs: with luaPkgs; [ luarocks rocks-nvim ];
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     plugins = with pkgs.vimPlugins; [
-      zen-mode-nvim
-      {
-        plugin = neorg-telescope;
-        config = ''
-        require("nvim-treesitter.configs").setup {
-                    highlight = {
-                      enable = true,
-                    }
-                  }
-        '';
-        type = "lua";
-      }
-      nvim-treesitter.withAllGrammars
-      (fromGitHub {
-        repo = "nvim-neorg/lua-utils.nvim";
-        rev = "e565749421f4bbb5d2e85e37c3cef9d56553d8bd";
-        ref = "main";
-        }
-      )
-      (fromGitHub {
-        repo = "nvim-neotest/nvim-nio";
-        rev = "33c62b3eadd8154169e42144de16ba4db6784bec";
-        ref = "master";
-      })
-      nui-nvim
-      plenary-nvim
       {
         plugin = neorg;
         config = ''
         require("neorg").setup {
           load = {
-            ["core.defaults"] = {}
+            ["core.defaults"] = {},
+            ["core.concealer"] = {},
+          }
+        }
+        '';
+        type = "lua";      
+      }
+      neorg-telescope
+      { 
+        plugin = nvim-treesitter.withAllGrammars;
+        config = ''
+        require("nvim-treesitter.configs").setup {
+          highlight = {
+            enable = true,
           }
         }
         '';
         type = "lua";
       }
+      zen-mode-nvim
       { plugin = neo-tree-nvim;
         config = ''
         vim.keymap.set('n', '<Leader>t', '<cmd>Neotree toggle<cr>')
@@ -75,7 +67,6 @@ in
         plugin = vim-startify;
         config = "let g:startify_change_to_vcs_root = 0";
       }
-      lualine-nvim
     ];
   };
 }
