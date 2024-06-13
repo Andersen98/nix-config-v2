@@ -8,6 +8,7 @@
     ./components/vscode.nix
     ./components/mk-fish-default.nix
     ./components/steam.nix
+    ./components/kbd.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

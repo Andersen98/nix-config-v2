@@ -14,6 +14,7 @@ with lib;
     ./components/fhs.nix
     ./components/vscode.nix
     ./components/mk-fish-default.nix
+    ./components/kbd.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
