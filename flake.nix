@@ -77,6 +77,11 @@
           "${machine}-${loadout}" = lib.nixosSystem {
             modules = [
               {
+                imports = [ self.outputs.hannah.system ];
+
+                hannah.system.defaultShell.enable = lib.mkForce "fish";
+              }
+              {
                 # given the users in this list the right to specify additional substituters via:
                 #    1. `nixConfig.substituters` in `flake.nix`
                 nix.settings.trusted-users = [ "hannah" ];
@@ -100,6 +105,7 @@
                 #nixpkgs.overlays = [ inputs.neorg-overlay.overlays.default ];
                 home-manager.extraSpecialArgs = {
                   inherit inputs;
+                  inherit (self) outputs;
                 };
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
@@ -131,7 +137,7 @@
       # Formatter for your nix files, available through 'nix fmt'
       # Other options beside 'alejandra' include 'nixpkgs-fmt'
       formatter = forAllSystems (system: inputs.nixfmt.packages.${system}.default); # nixpkgs.legacyPackages.${system}.alejandra);
-
+      hannah = (import ./hannah);
       nixosConfigurations = lib.attrsets.mergeAttrsList (map genConfiguration allCombinations);
     };
 }
