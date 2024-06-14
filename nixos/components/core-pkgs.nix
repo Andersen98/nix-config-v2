@@ -7,6 +7,9 @@
 
 {
   imports = [ <nixpkgs/nixos/modules/profiles/base.nix> ];
+  environment.systemPackages = [
+    pkgs.discord
+  ];
 
   nixpkgs = {
     # You can add overlays here

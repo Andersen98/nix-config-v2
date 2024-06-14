@@ -64,7 +64,6 @@
 
     # internet
     firefox
-    discord
 
     # media
     obs-studio
