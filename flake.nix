@@ -123,6 +123,6 @@
       formatter = flake-utils.lib.eachDefaultSystem (system: inputs.nixfmt.packages.${system}.default); # nixpkgs.legacyPackages.${system}.alejandra);
 
       nixosConfigurations = lib.attrsets.mergeAttrsList (map genConfiguration allCombinations);
-      homeManagerModules = import ./home;
+      homeManagerModules = import [ ./home ];
     };
 }
