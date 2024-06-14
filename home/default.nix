@@ -64,11 +64,13 @@
 
     # internet
     firefox
+    discord
 
     # media
     obs-studio
     vlc
     inkscape
+    blender
 
     # xorg
     xclip

@@ -10,7 +10,6 @@ with lib;
   imports = [
     ./components/sway.nix
     ./components/hannah.nix
-    ./components/core-pkgs.nix
     ./components/fhs.nix
     ./components/vscode.nix
     ./components/mk-fish-default.nix
@@ -18,6 +17,8 @@ with lib;
   ];
 
   programs.nm-applet.enable = true;
+  environment.systemPackages = with pkgs; [ networkmanagerapplet ];
+
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
     "nix-command"

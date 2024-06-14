@@ -12,5 +12,4 @@
     platformTheme = "gnome";
     style = "adwaita-dark";
   };
-
 }

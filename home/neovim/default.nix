@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, lib, ... }:
 let
   fromGitHub =
     {
@@ -27,17 +23,29 @@ in
     vimAlias = true;
     enable = true;
     extraLuaConfig = builtins.readFile ./extra-config.lua;
-    extraPackages = with pkgs; [ gcc gnutar curl ];
+    extraPackages = with pkgs; [
+      gcc
+      gnutar
+      curl
+    ];
     plugins = with pkgs.vimPlugins; [
+      tokyonight-nvim
+      {
+        config = ''
+          require("kanagawa").load("wave")
+        '';
+        plugin = kanagawa-nvim;
+        type = "lua";
+      }
       neorg-telescope
       {
         plugin = neorg;
         config = ''
-         require("neorg").setup {
-            load = {
-              ["core.defaults"] = {}
-            }
-          }
+          require("neorg").setup {
+             load = {
+               ["core.defaults"] = {}
+             }
+           }
         '';
         type = "lua";
       }
@@ -53,11 +61,13 @@ in
         type = "lua";
       }
       {
-        plugin = (fromGitHub {
-          repo="nix-community/tree-sitter-nix";
-          rev="b3cda619248e7dd0f216088bd152f59ce0bbe488"; 
-          ref="master";
-        });
+        plugin = (
+          fromGitHub {
+            repo = "nix-community/tree-sitter-nix";
+            rev = "b3cda619248e7dd0f216088bd152f59ce0bbe488";
+            ref = "master";
+          }
+        );
       }
       zen-mode-nvim
       {

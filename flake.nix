@@ -46,8 +46,14 @@
       inherit (self) outputs;
       inherit (nixpkgs) lib;
       allMachines = [
-        { hostname="lenovo-x270"; system="x86_64-linux";}
-        { hostname="x570"; system="x86_64-linux";}
+        {
+          hostname = "lenovo-x270";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "x570";
+          system = "x86_64-linux";
+        }
       ];
       allLoadouts = [
         "sway"
@@ -64,6 +70,36 @@
           "${machine.hostname}-${loadout}" = lib.nixosSystem {
             inherit (machine) system;
             modules = [
+              {
+                imports = [ <nixpkgs/nixos/modules/profiles/base.nix> ];
+                nixpkgs = {
+                  # You can add overlays here
+                  overlays = [
+                    (final: prev: { nvimoriginal = prev.neovim.overrideAtrrs { pname = "nvimoriginal"; }; })
+
+                    # Add overlays your own flake exports (from overlays and pkgs dir):
+                    outputs.overlays.additions
+                    outputs.overlays.modifications
+                    outputs.overlays.unstable-packages
+                    # You can also add overlays exported from other flakes:
+                    # neovim-nightly-overlay.overlays.default
+                    inputs.neorg-overlay.overlays.default
+                    inputs.neovim-nightly-overlay.overlays.default
+
+                    # Or define it inline, for example:
+                    # (final: prev: {
+                    #   hi = final.hello.overrideAttrs (oldAttrs: {
+                    #     patches = [ ./change-hello-to-hi.patch ];
+                    #   });
+                    # })
+                  ];
+                  # Configure your nixpkgs instance
+                  config = {
+                    # Disable if you don't want unfree packages
+                    allowUnfree = true;
+                  };
+                };
+              }
               {
                 # given the users in this list the right to specify additional substituters via:
                 #    1. `nixConfig.substituters` in `flake.nix`
@@ -85,7 +121,7 @@
               # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
               home-manager.nixosModules.home-manager
               {
-             
+
                 home-manager.extraSpecialArgs = {
                   inherit inputs;
                 };
@@ -108,21 +144,20 @@
           };
         };
     in
-    {
-      # Your custom packages and modifications, exported as overlays
-      #overlays = import ./overlays { inherit inputs; };
+    flake-utils.lib.eachDefaultSystem (system: {
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
-      packages = flake-utils.lib.eachDefaultSystem (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      packages = import ./pkgs nixpkgs.legacyPackages.${system};
       # Formatter for your nix files, available through 'nix fmt'
       # Other options beside 'alejandra' include 'nixpkgs-fmt'
-      formatter = flake-utils.lib.eachDefaultSystem (system: inputs.nixfmt.packages.${system}.default); # nixpkgs.legacyPackages.${system}.alejandra);
-
+      formatter = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+      #formatter =  inputs.nixfmt.packages.${system}; # nixpkgs.legacyPackages.${system}.alejandra);
+    })
+    // {
       nixosConfigurations = lib.attrsets.mergeAttrsList (map genConfiguration allCombinations);
-      homeManagerModules =[ (import  ./home) ];
-      overlays.default = [ 
-        inputs.neorg-overlay.overlays.default 
-        inputs.neovim-nightly-overlay.overlays.default
-      ]; 
+      homeManagerModules = [ (import ./home) ];
+
+      # Your custom packages and modifications, exported as overlays
+      overlays = import ./overlays { inherit inputs; };
     };
 }

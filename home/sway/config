@@ -23,6 +23,9 @@ set $term kitty
 # on the original workspace that the command was run on.
 set $menu dmenu_path | wmenu -f $font | xargs swaymsg exec --
 
+
+# NM-APPLET
+exec_always nm-applet
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /run/current-system/sw/share/backgrounds/sway/)
@@ -204,7 +207,7 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    font pango:DejaVu Sans Mono 16
+    font pango:SauceCodePro Nerd Font 16
     position top
 
     # When the status_command prints a new line to stdout, swaybar updates.
