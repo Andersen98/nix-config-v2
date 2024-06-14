@@ -9,6 +9,8 @@
   imports = [ <nixpkgs/nixos/modules/profiles/base.nix> ];
   environment.systemPackages = [
     pkgs.discord
+
+    pkgs.blender
   ];
 
   nixpkgs = {
