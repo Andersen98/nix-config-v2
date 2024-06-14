@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  inputs,
   ...
 }:
 let
@@ -29,7 +28,6 @@ in
     enable = true;
     extraLuaConfig = builtins.readFile ./extra-config.lua;
     extraPackages = with pkgs; [ gcc gnutar curl ];
-    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     plugins = with pkgs.vimPlugins; [
       neorg-telescope
       {

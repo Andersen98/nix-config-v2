@@ -61,7 +61,6 @@
       genConfiguration =
         { loadout, machine }:
         {
-          warnings = builtins.trace machine "hi";
           "${machine.hostname}-${loadout}" = lib.nixosSystem {
             inherit (machine) system;
             modules = [
@@ -86,10 +85,7 @@
               # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
               home-manager.nixosModules.home-manager
               {
-                nixpkgs.overlays = [
-                inputs.neorg-overlay.overlays.default
-                inputs.neovim-nightly-overlay.overlays.default
-              ];
+             
                 home-manager.extraSpecialArgs = {
                   inherit inputs;
                 };
@@ -114,7 +110,7 @@
     in
     {
       # Your custom packages and modifications, exported as overlays
-      overlays = import ./overlays { inherit inputs; };
+      #overlays = import ./overlays { inherit inputs; };
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
       packages = flake-utils.lib.eachDefaultSystem (system: import ./pkgs nixpkgs.legacyPackages.${system});
@@ -124,5 +120,9 @@
 
       nixosConfigurations = lib.attrsets.mergeAttrsList (map genConfiguration allCombinations);
       homeManagerModules =[ (import  ./home) ];
+      overlays.default = [ 
+        inputs.neorg-overlay.overlays.default 
+        inputs.neovim-nightly-overlay.overlays.default
+      ]; 
     };
 }
