@@ -58,7 +58,6 @@
         machine = allMachines;
         loadout = allLoadouts;
       };
-      home-managerModule = 
       genConfiguration =
         { loadout, machine }:
         {
