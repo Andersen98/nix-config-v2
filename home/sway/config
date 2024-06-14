@@ -8,7 +8,8 @@
 #
 
 #font
-set $font 'DejaVu Sans Mono 16'
+set $font 'SauceCodePro Nerd Font 16'
+font pango:SauceCodePro Nerd Font 14
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 # Home row direction keys, like vim
@@ -30,6 +31,30 @@ exec_always nm-applet
 #
 # Default wallpaper (more resolutions are available in /run/current-system/sw/share/backgrounds/sway/)
 output * bg /run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+# COLORSCHEME TAKEN FROM REBELOT/KANAGAWA
+
+
+set $surimiOrange #FFA066
+set $springViolet #938AA9
+set $carpYellow #E6C384
+set $springGreen #98BB6C
+
+set $fujiWhite #DCD7BA
+set $oldWhite #C8C093
+
+set $sumiInkFour #2A2A37
+set $sumiInkThree #1F1F28
+set $sumiInkTwo #1a1a22
+set $sumiInkOne #181820
+set $sumiInkZero #16161D
+# class                 border        backgr.       text          indicator     child_border
+client.focused          $carpYellow   $sumiInkTwo   $fujiWhite    $carpYellow   $carpYellow 
+client.focused_inactive $springViolet $sumiInkFour  $springViolet $surimiOrange $springViolet
+client.unfocused        $sumiInkZero  $sumiInkThree $springViolet $sumiInkTwo   $springViolet
+client.urgent           $oldWhite     $surimiOrange $springGreen  $surimiOrange $surimiOrange
+client.placeholder      $springViolet $sumiInkZero  $fujiWhite    $sumiInkTwo   $sumiInkFour
+
+client.background       $sumiInkZero
 #
 # Example configuration:
 #
@@ -212,12 +237,14 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+    status_command while date +'%B-%d-%Y %X'; do sleep 1; done
 
     colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
+        statusline $carpYellow
+        background $sumiInkTwo
+        #  class           border       background     text
+        inactive_workspace $sumiInkFour $sumiInkFour   $fujiWhite
+        focused_workspace  $springGreen $sumiInkThree    $oldWhite
     }
 }
 
