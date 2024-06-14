@@ -3,6 +3,7 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 {
+  machine,
   config,
   lib,
   pkgs,
@@ -13,17 +14,20 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../components/nvidia.nix
-    ../components/pulseaudio.nix
-    ../components/bluetooth.nix
-    ../components/cuda-fhs.nix
+    ./nvidia.nix
+    ./cuda-fhs.nix
   ];
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  
+  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.support32Bit = true;    ## If compatibility with 32-bit applications is desired.
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = machine.hostname; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.

@@ -7,13 +7,13 @@
 
 {
   imports = [
-    ./components/neovim
-    ./components/bash.nix
-    ./components/fish.nix
-    ./components/kitty.nix
-    ./components/starship-pastel-preset.nix
-    ./components/texlive.nix
-    ./components/foot.nix
+    ./neovim
+    ./bash.nix
+    ./fish.nix
+    ./kitty.nix
+    ./starship-pastel-preset.nix
+    ./texlive.nix
+    ./foot.nix
   ];
 
   # This config was copied and modified from the following
@@ -38,7 +38,7 @@
   #   executable = true;  # make all files executable
   # };
   home.file.".config/sway" = {
-    source = ./components/sway;
+    source = ./sway;
     recursive = true;
     executable = false;
   };

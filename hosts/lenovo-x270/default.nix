@@ -1,24 +1,29 @@
 {
+  machine,
   config,
   lib,
   nixos-hardware,
   pkgs,
-  hostname,
   ...
 }:
 {
   imports = with nixos-hardware.nixosModules; [
     lenovo-thinkpad-x270
     ./hardware-configuration.nix
-    ../components/bluetooth.nix
-    ../components/pulseaudio.nix
   ];
+
+  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.support32Bit = true; # # If compatibility with 32-bit applications is desired.
+
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = hostname; # Define your hostname.
+  networking.hostName = machine.hostname; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.

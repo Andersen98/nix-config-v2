@@ -17,6 +17,7 @@ with lib;
     ./components/kbd.nix
   ];
 
+  programs.nm-applet.enable = true;
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
     "nix-command"

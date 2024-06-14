@@ -25,11 +25,13 @@
     # at the same time. Here's an working example:
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'
+    flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nixfmt.url = "github:NixOS/nixfmt";
+    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
   };
   outputs =
     {
@@ -37,27 +39,16 @@
       nixpkgs,
       nixos-hardware,
       home-manager,
+      flake-utils,
       ...
     }@inputs:
     let
       inherit (self) outputs;
 
       inherit (nixpkgs) lib;
-      # Supported systems for your flake packages, shell, etc.
-      systems = [
-        "aarch64-linux"
-        "i686-linux"
-        "x86_64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-      ];
-      # This is a function that generates an attribute by calling a function you
-      # pass to it, with each system as an argument
-      forAllSystems = lib.genAttrs systems;
       allMachines = [
-        "lenovo-x270"
-        "x570"
-        "all-hardware"
+        { hostname="lenovo-x270"; system="x86_64-linux";}
+        { hostname="x570"; system="x86_64-linux";}
       ];
       allLoadouts = [
         "sway"
@@ -68,13 +59,12 @@
         machine = allMachines;
         loadout = allLoadouts;
       };
-      system = "x86_64-linux";
       genConfiguration =
         { loadout, machine }:
         {
-
-          inherit system;
-          "${machine}-${loadout}" = lib.nixosSystem {
+          warnings = builtins.trace machine "hi";
+          "${machine.hostname}-${loadout}" = lib.nixosSystem {
+            inherit (machine) system;
             modules = [
               {
                 # given the users in this list the right to specify additional substituters via:
@@ -97,7 +87,10 @@
               # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
               home-manager.nixosModules.home-manager
               {
-                #nixpkgs.overlays = [ inputs.neorg-overlay.overlays.default ];
+                nixpkgs.overlays = [
+                inputs.neorg-overlay.overlays.default
+                inputs.neovim-nightly-overlay.overlays.default
+              ];
                 home-manager.extraSpecialArgs = {
                   inherit inputs;
                 };
@@ -106,13 +99,11 @@
                 home-manager.users.hannah = ./home;
               }
               (./nixos + "/${loadout}.nix")
-              (./machines + "/${machine}")
+              (./hosts + "/${machine.hostname}")
             ];
             specialArgs = {
-              hostname = "${machine}-${loadout}";
               inherit
                 machine
-                loadout
                 nixos-hardware
                 home-manager
                 inputs
@@ -127,10 +118,10 @@
       overlays = import ./overlays { inherit inputs; };
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
-      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      packages = flake-utils.lib.eachDefaultSystem (system: import ./pkgs nixpkgs.legacyPackages.${system});
       # Formatter for your nix files, available through 'nix fmt'
       # Other options beside 'alejandra' include 'nixpkgs-fmt'
-      formatter = forAllSystems (system: inputs.nixfmt.packages.${system}.default); # nixpkgs.legacyPackages.${system}.alejandra);
+      formatter = flake-utils.lib.eachDefaultSystem (system: inputs.nixfmt.packages.${system}.default); # nixpkgs.legacyPackages.${system}.alejandra);
 
       nixosConfigurations = lib.attrsets.mergeAttrsList (map genConfiguration allCombinations);
     };
