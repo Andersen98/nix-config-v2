@@ -44,7 +44,6 @@
     }@inputs:
     let
       inherit (self) outputs;
-
       inherit (nixpkgs) lib;
       allMachines = [
         { hostname="lenovo-x270"; system="x86_64-linux";}
@@ -59,6 +58,7 @@
         machine = allMachines;
         loadout = allLoadouts;
       };
+      home-managerModule = 
       genConfiguration =
         { loadout, machine }:
         {
@@ -124,5 +124,6 @@
       formatter = flake-utils.lib.eachDefaultSystem (system: inputs.nixfmt.packages.${system}.default); # nixpkgs.legacyPackages.${system}.alejandra);
 
       nixosConfigurations = lib.attrsets.mergeAttrsList (map genConfiguration allCombinations);
+      homeManagerModules = import ./home;
     };
 }
