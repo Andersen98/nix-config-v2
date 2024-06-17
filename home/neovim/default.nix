@@ -21,6 +21,7 @@ in
     ./plugins/telescope.nix
     ./plugins/noice.nix
     ./plugins/lspconfig.nix
+    ./plugins/which-key.nix
   ];
   
   programs.neovim =  {
@@ -79,12 +80,7 @@ in
       {
         plugin = neo-tree-nvim;
         config = ''
-          vim.keymap.set('n', '<Leader>t', '<cmd>Neotree toggle<cr>')
-          vim.keymap.set('n', '<Leader>b', '<cmd>Neotree toggle show buffers right<cr>')
-          vim.keymap.set('n', '<Leader>s', '<cmd>Neotree float git_status<cr>')
-          vim.keymap.set('n', '<cr>', '<cmd>Neotree reveal<cr>')
-          vim.keymap.set('n', '<leader>b', '<cmd>Neotree toggle show buffers right<cr>')
-          vim.keymap.set('n', '<leader>s', '<cmd>Neotree float git_status<cr>')
+          vim.api.nvim_set_keymap('n', '<Leader>t', '<cmd>Neotree toggle<cr>', {desc = "Tree Toggle",})
         '';
         type = "lua";
       }
