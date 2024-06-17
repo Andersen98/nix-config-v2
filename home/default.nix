@@ -37,6 +37,17 @@
   #   recursive = true;   # link recursively
   #   executable = true;  # make all files executable
   # };
+  home.file.".config/wofi" = {
+    source = ./wofi;
+    recursive = true;
+    executable = false;
+  };
+  home.file.".config/networkmanager-dmenu" = {
+    source = ./networkmanager-dmenu;
+    recursive = true;
+    executable = false;
+  };
+
   home.file.".config/sway" = {
     source = ./sway;
     recursive = true;
@@ -171,7 +182,7 @@
   # the home Manager release notes for a list of state version
   # changes in each release.
   home.stateVersion = "24.05";
-
+  home.enableNixpkgsReleaseCheck = false;
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
 }

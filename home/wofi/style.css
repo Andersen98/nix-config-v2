@@ -1,0 +1,60 @@
+/* ::root{ */
+/*     --accent: #5291e2; */
+/*     --dark: #383C4A; */
+/*     --light: #7C818C; */
+/*     --ld: #404552; */
+/*     --dl: #4B5162 */
+/*     --white: white; */
+/* } */
+
+*{
+    font-family: monospace;
+}
+
+window {
+    background-color: #98BB6C;
+}
+
+#input {
+    margin: 5px;
+    border-radius: 0px;
+    border: none;
+    border-bottom: 3px solid #938AA9;
+    background-color: #1F1F28;
+    color: #DCD7BA;
+    font: 2rem, "SauceCodePro Nerd Font", monospace;
+}
+
+#inner-box {
+    background-color: #1a1a22;
+
+}
+
+#outer-box {
+    margin: 5px;
+    padding:20px;
+    background-color: #16161D;
+}
+
+#scroll {
+}
+
+#text {
+padding: 5px;
+color: #DCD7BA;
+  font-family: "SauceCodePro Nerd Font", monospace;
+  font-size: 1.2rem;
+}
+
+#entry:nth-child(even){
+    background-color: #2A2A37;
+}
+
+#entry:selected {
+    background-color: #16161D;
+    border: 5px solid #E6C384;
+}
+
+#text:selected {
+  color: #938AA9;
+}

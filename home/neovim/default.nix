@@ -29,6 +29,7 @@ in
       curl
     ];
     plugins = with pkgs.vimPlugins; [
+      which-key-nvim
       tokyonight-nvim
       {
         config = ''
@@ -49,25 +50,11 @@ in
         '';
         type = "lua";
       }
+      nvim-treesitter-textobjects
       {
         plugin = nvim-treesitter.withAllGrammars;
-        config = ''
-          require("nvim-treesitter.configs").setup {
-            highlight = {
-              enable = true,
-            }
-          }
-        '';
+        config = builtins.readFile ./treesitter.lua;
         type = "lua";
-      }
-      {
-        plugin = (
-          fromGitHub {
-            repo = "nix-community/tree-sitter-nix";
-            rev = "b3cda619248e7dd0f216088bd152f59ce0bbe488";
-            ref = "master";
-          }
-        );
       }
       zen-mode-nvim
       {

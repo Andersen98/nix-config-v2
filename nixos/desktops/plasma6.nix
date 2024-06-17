@@ -2,7 +2,6 @@
 {
   imports = [
     ./components/plasma6.nix
-    ./components/hannah.nix
     ./components/fhs.nix
     ./components/vscode.nix
     ./components/mk-fish-default.nix
