@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 let
   fromGitHub =
     {
@@ -17,12 +17,18 @@ let
     };
 in
 {
-
-  programs.neovim = rec {
+  imports = [
+    ./plugins/telescope.nix
+    ./plugins/noice.nix
+    ./plugins/lspconfig.nix
+  ];
+  
+  programs.neovim =  {
     viAlias = true;
     vimAlias = true;
     enable = true;
     extraLuaConfig = builtins.readFile ./extra-config.lua;
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     extraPackages = with pkgs; [
       gcc
       gnutar
@@ -77,7 +83,6 @@ in
           vim.keymap.set('n', '<Leader>b', '<cmd>Neotree toggle show buffers right<cr>')
           vim.keymap.set('n', '<Leader>s', '<cmd>Neotree float git_status<cr>')
           vim.keymap.set('n', '<cr>', '<cmd>Neotree reveal<cr>')
-          vim.keymap.set('n', 'gd', '<cmd>Neotree float reveal_file=<cfile> reveal_force_cwd<cr>')
           vim.keymap.set('n', '<leader>b', '<cmd>Neotree toggle show buffers right<cr>')
           vim.keymap.set('n', '<leader>s', '<cmd>Neotree float git_status<cr>')
         '';
