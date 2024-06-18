@@ -31,6 +31,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nixfmt.url = "github:NixOS/nixfmt";
+    nix-colors.url = "github:misterio77/nix-colors";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
   };
   outputs =
@@ -124,6 +125,9 @@
 
                 home-manager.extraSpecialArgs = {
                   inherit inputs;
+                  inherit outputs;
+                  inherit loadout;
+                  inherit machine;
                 };
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;

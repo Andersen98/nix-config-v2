@@ -8,8 +8,8 @@
 #
 
 #font
-set $font 'SauceCodePro Nerd Font 16'
-font pango:SauceCodePro Nerd Font 14
+set $font 'CaskaydiaCove Nerd Font 16'
+font pango:CaskaydiaCove Nerd Font 14
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 # Home row direction keys, like vim
@@ -22,8 +22,10 @@ set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | wmenu -f $font | xargs swaymsg exec --
+set $menu dmenu_path | wofi --dmenu | xargs swaymsg exec --
 
+# Disable focus follows mouse
+focus_follows_mouse no
 
 # NM-APPLET
 exec_always nm-applet
@@ -34,27 +36,14 @@ output * bg /run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_19
 # COLORSCHEME TAKEN FROM REBELOT/KANAGAWA
 
 
-set $surimiOrange #FFA066
-set $springViolet #938AA9
-set $carpYellow #E6C384
-set $springGreen #98BB6C
+# class                 border          backgr.         text            indicator     child_border
+client.focused          $baseZeroEight  $baseZeroZero    $baseZeroEight  $baseZeroD    $baseZeroE
+client.focused_inactive $baseZeroD      $baseZeroThree  $baseZeroZero   $baseZeroA    $baseZeroZero
+client.unfocused        $baseZeroSix    $baseZeroTwo    $baseZeroSeven  $baseZeroC    $baseZeroThree
+client.urgent           $baseZeroOne    $baseZeroF      $baseZeroZero   $baseZeroA    $baseZeroNine
+client.placeholder      $baseZeroFour   $baseZeroZero   $baseZeroD      $baseZeroA    $baseZeroThree
 
-set $fujiWhite #DCD7BA
-set $oldWhite #C8C093
-
-set $sumiInkFour #2A2A37
-set $sumiInkThree #1F1F28
-set $sumiInkTwo #1a1a22
-set $sumiInkOne #181820
-set $sumiInkZero #16161D
-# class                 border        backgr.       text          indicator     child_border
-client.focused          $carpYellow   $sumiInkTwo   $fujiWhite    $carpYellow   $carpYellow 
-client.focused_inactive $springViolet $sumiInkFour  $springViolet $surimiOrange $springViolet
-client.unfocused        $sumiInkZero  $sumiInkThree $springViolet $sumiInkTwo   $springViolet
-client.urgent           $oldWhite     $surimiOrange $springGreen  $surimiOrange $surimiOrange
-client.placeholder      $springViolet $sumiInkZero  $fujiWhite    $sumiInkTwo   $sumiInkFour
-
-client.background       $sumiInkZero
+client.background       $baseZeroTwo
 #
 # Example configuration:
 #
@@ -197,11 +186,11 @@ client.background       $sumiInkZero
     # You can send windows there and get them back later.
 
     # Move the currently focused window to the scratchpad
-    bindsym $mod+Shift+minus move scratchpad
+    bindsym $mod+Shift+grave move scratchpad
 
     # Show the next scratchpad window or hide the focused scratchpad window.
     # If there are multiple scratchpad windows, this command cycles through them.
-    bindsym $mod+minus scratchpad show
+    bindsym $mod+grave scratchpad show
 #
 # Resizing containers:
 #
@@ -227,12 +216,25 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+# Open Mode
+mode "open" {
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym o mode "default"
+
+    # Start networking
+    bindsym n exec networkmanager_dmenu
+
+    # Start audio
+    bindsym a exec pauvcontrol
+}
+bindsym $mod+o mode "open"
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    font pango:SauceCodePro Nerd Font 16
+    font pango:CaskaydiaCove Nerd Font 16
     position top
 
     # When the status_command prints a new line to stdout, swaybar updates.
@@ -240,11 +242,11 @@ bar {
     status_command while date +'%B-%d-%Y %X'; do sleep 1; done
 
     colors {
-        statusline $carpYellow
-        background $sumiInkTwo
+        statusline $baseZeroEight
+        background $baseZeroZero
         #  class           border       background     text
-        inactive_workspace $sumiInkFour $sumiInkFour   $fujiWhite
-        focused_workspace  $springGreen $sumiInkThree    $oldWhite
+        inactive_workspace $baseZeroZero $baseZeroZero   $baseZeroD
+        focused_workspace  $baseZeroOne $baseZeroOne    $baseZeroEight
     }
 }
 

@@ -19,9 +19,10 @@ in
 {
   imports = [
     ./plugins/telescope.nix
-    ./plugins/noice.nix
+#    ./plugins/noice.nix
     ./plugins/lspconfig.nix
     ./plugins/which-key.nix
+    ./plugins/base16-nvim.nix
   ];
   
   programs.neovim =  {
@@ -37,20 +38,24 @@ in
     ];
     plugins = with pkgs.vimPlugins; [
       tokyonight-nvim
-      {
-        config = ''
-          require("kanagawa").load("wave")
-        '';
-        plugin = kanagawa-nvim;
-        type = "lua";
-      }
+      kanagawa-nvim
       neorg-telescope
       {
         plugin = neorg;
         config = ''
           require("neorg").setup {
              load = {
-               ["core.defaults"] = {}
+               ["core.defaults"] = {},
+               ["core.concealer"] = {},
+               ["core.dirman"] = {
+                  config = {
+                    workspaces = {
+                      wiki = "~/neorg/wiki",
+                      playground = "~/neorg/playground",
+                    },
+                    default_workspace = "playground",
+                  },
+                }
              }
            }
         '';

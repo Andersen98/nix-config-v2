@@ -18,7 +18,7 @@ vim.cmd([[
   filetype indent on
 ]])
 
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = ""
 
 vim.opt.inccommand = "split"
 
@@ -27,3 +27,5 @@ vim.opt.ignorecase = true
 vim.opt.termguicolors = true
 
 vim.g.mapleader = " "
+
+vim.opt.whichwrap = "b,s"

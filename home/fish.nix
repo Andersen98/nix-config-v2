@@ -32,6 +32,16 @@
       "..." = "cd ../../";
     };
     functions = {
+      fish_user_key_bindings = {
+        body = ''
+          bind \cl forward-char
+          bind \ch backward-char
+          bind \cj down-or-search
+          bind \ck up-or-search
+          bind \cw forward-word
+          bind \cb backward-word
+        '';
+      };
       develope = {
         wraps = "nix develop";
         body = "env ANY_NIX_SHELL_PKGS=(basename (pwd))\"#\"(git describe --tags --dirty) (type -P nix) develop --command fish";

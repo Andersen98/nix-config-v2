@@ -1,9 +1,6 @@
 {
   machine,
-  config,
-  lib,
   nixos-hardware,
-  pkgs,
   ...
 }:
 {
@@ -12,8 +9,6 @@
     ./hardware-configuration.nix
   ];
 
-  hardware.pulseaudio.enable = true;
-  hardware.pulseaudio.support32Bit = true; # # If compatibility with 32-bit applications is desired.
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;

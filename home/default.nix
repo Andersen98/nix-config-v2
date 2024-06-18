@@ -1,7 +1,6 @@
-{
-  pkgs,
+{ config,
   lib,
-  inputs,
+  pkgs,
   ...
 }:
 
@@ -14,6 +13,7 @@
     ./starship-pastel-preset.nix
     ./texlive.nix
     ./foot.nix
+    ./colors
   ];
 
   # This config was copied and modified from the following
@@ -37,8 +37,26 @@
   #   recursive = true;   # link recursively
   #   executable = true;  # make all files executable
   # };
-  home.file.".config/sway" = {
-    source = ./sway;
+  home.file.".config/networkmanager-dmenu" = {
+    source = ./networkmanager-dmenu;
+    recursive = true;
+    executable = false;
+  };
+
+  home.file.".config/xdg-desktop-portal" = {
+    source = ./xdg-desktop-portal;
+    recursive = true;
+    executable = false;
+  };
+    
+  home.file.".config/wofi" = {
+    source = ./wofi;
+    recursive = true;
+    executable = false;
+  };
+  home.file.".config/sway/config".text = (import ./sway/config.nix) {inherit config; inherit lib;};
+  home.file.".config/sway/config.d" = {
+    source = ./sway/config.d;
     recursive = true;
     executable = false;
   };

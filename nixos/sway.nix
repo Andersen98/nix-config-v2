@@ -1,6 +1,5 @@
 {
   config,
-  nixpkgs,
   pkgs,
   lib,
   ...
@@ -14,11 +13,32 @@ with lib;
     ./components/vscode.nix
     ./components/mk-fish-default.nix
     ./components/kbd.nix
+    ./components/pipewire.nix
   ];
 
-  programs.nm-applet.enable = true;
-  environment.systemPackages = with pkgs; [ networkmanagerapplet ];
+  environment.sessionVariables = rec {
+    XDG_CACHE_HOME  = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME   = "$HOME/.local/share";
+    XDG_STATE_HOME  = "$HOME/.local/state";
 
+    # Not officially in the specification
+    XDG_BIN_HOME    = "$HOME/.local/bin";
+    PATH = [ 
+      "${XDG_BIN_HOME}"
+    ];
+    XDG_CURRENT_DESKTOP = "sway";
+  };
+  programs.nm-applet.enable = true;
+  environment.systemPackages = with pkgs; [
+    wofi
+    networkmanagerapplet 
+    xdg-desktop-portal-wlr
+    xdg-desktop-portal
+    xdg-desktop-portal-gtk
+    pavucontrol
+    networkmanager_dmenu
+  ];
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
     "nix-command"
