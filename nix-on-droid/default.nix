@@ -1,4 +1,4 @@
-{ config, lib, pkgs, rootPath, inputs, ...}:
+{ config, lib, pkgs, homeManagerLoadout, rootPath, inputs, ...}:
 
 {
   environment.packages = with pkgs; [
@@ -44,7 +44,7 @@
       inherit inputs;
       inherit rootPath;
     };
-    config = ./home.nix;
+    config = (rootPath + "/home/${homeManagerLoadout}.nix");
     backupFileExtension = "hm-back";
     useGlobalPkgs = true;
   };
