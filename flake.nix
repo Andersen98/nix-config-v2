@@ -21,7 +21,11 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
-    # You can access packages and modules from different nixpkgs revs
+    nix-on-droid = {
+      url = "github:t184256/nix-on-droid/release-23.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+   # You can access packages and modules from different nixpkgs revs
     # at the same time. Here's an working example:
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'
@@ -41,6 +45,7 @@
       nixos-hardware,
       home-manager,
       flake-utils,
+      nix-on-droid,
       ...
     }@inputs:
     let
@@ -163,5 +168,26 @@
 
       # Your custom packages and modifications, exported as overlays
       overlays = import ./overlays { inherit inputs; };
+
+      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        modules = [ ./nix-on-droid ];
+        extraSpecialArgs = {
+	  inherit inputs;
+	  rootPath = ./.;
+	};
+        # Apply nix-on-droid overlay to nixpkgs
+        pkgs = import nixpkgs {
+          system = "aarch64-linux";
+          overlays = [
+            nix-on-droid.overlays.default
+	    inputs.neorg-overlay.overlays.default
+	    inputs.neovim-nightly-overlay.overlays.default
+	  ];
+        };
+
+        home-manager-path = home-manager.outPath;
+      };
+
     };
+
 }

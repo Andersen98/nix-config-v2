@@ -1,3 +1,5 @@
+debug-droid:
+    nix-on-droid switch --flake . 
 debug-lenovo-plasma5:
     nixos-rebuild switch --flake .#lenovo-x270-plasma5 --show-trace --impure --use-remote-sudo
 debug-lenovo-sway:
