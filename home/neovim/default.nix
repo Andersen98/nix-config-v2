@@ -1,21 +1,4 @@
-{ pkgs, lib, inputs, ... }:
-let
-  fromGitHub =
-    {
-      rev,
-      ref,
-      repo,
-    }:
-    pkgs.vimUtils.buildVimPlugin {
-      pname = "${lib.strings.sanitizeDerivationName repo}";
-      version = ref;
-      src = builtins.fetchGit {
-        url = "https://github.com/${repo}.git";
-        ref = ref;
-        rev = rev;
-      };
-    };
-in
+{ pkgs,inputs, ... }:
 {
   imports = [
     ./plugins/telescope.nix

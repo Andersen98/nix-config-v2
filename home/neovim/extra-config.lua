@@ -5,9 +5,10 @@ vim.opt.relativenumber = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
+vim.opt.textwidth = 52
 vim.opt.wrap = false
-vim.opt.sidescroll = 5
-vim.opt.listchars = "tab:> ,trail:-,nbsp:+,precedes:<,extends:>"
+vim.opt.listchars = { space = '_', tab = '>~', trail = '-', nbsp = '+', precedes = '<', extends = '>'}
+vim.opt.sidescroll = 8
 
 vim.opt.smarttab = true
 vim.opt.expandtab = true

@@ -3,10 +3,9 @@
   programs.neovim = {
 
     extraPackages = with pkgs; [
-
       nil #nix lsp
       pyright
-
+      haskell-language-server
     ];
     plugins = with pkgs.vimPlugins; [
 
@@ -14,8 +13,7 @@
         config = ''
           require('lspconfig').nil_ls.setup{}
           require('lspconfig').pyright.setup{}
-
-
+          require'lspconfig'.hls.setup{}
           local lsp_mappings = {
           { 'gD', vim.lsp.buf.declaration },
           { 'gd', vim.lsp.buf.definition },

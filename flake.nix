@@ -83,7 +83,7 @@
       };
       genNixOnDroidConfiguration = {homeManagerLoadout, ...}: 
 	{ "${homeManagerLoadout}" = nix-on-droid.lib.nixOnDroidConfiguration {
-	  modules = [ ./nix-on-droid ];
+	  modules = [( ./nix-on-droid) ];
 	  extraSpecialArgs = {
 	    inherit inputs homeManagerLoadout;
 	    rootPath = ./.;
