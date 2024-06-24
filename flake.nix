@@ -166,6 +166,7 @@
                   inherit outputs;
                   inherit machine;
                 };
+                home-manager.backupFileExtension = "hm-bak";
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.hannah = (./. + "/home/${homeManagerLoadout}.nix");
