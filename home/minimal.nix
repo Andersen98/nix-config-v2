@@ -30,6 +30,12 @@
   #   recursive = true;   # link recursively
   #   executable = true;  # make all files executable
   # };
+  home.file."config/cabal" = {
+    source = ./cabal;
+    recursive = true;
+    executable = false;
+  };
+
   home.file.".config/networkmanager-dmenu" = {
     source = ./networkmanager-dmenu;
     recursive = true;
