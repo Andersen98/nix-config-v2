@@ -43,8 +43,9 @@
     extraSpecialArgs = {
       inherit inputs;
       inherit rootPath;
+      inherit homeManagerLoadout;
     };
-    config = (rootPath + "/home/${homeManagerLoadout}.nix");
+    config = ./home.nix;
     backupFileExtension = "hm-back";
     useGlobalPkgs = true;
   };

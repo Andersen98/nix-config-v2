@@ -15,8 +15,9 @@
 
   # This config was copied and modified from the following
   # nixos-and-flakes.thiscute.world/nixos-with-flakes/start-using-home-manager
-  home.username = "hannah";
-  home.homeDirectory = "/home/hannah";
+  home.username = lib.mkDefault "hannah";
+  home.homeDirectory = lib.mkDefault "/home/hannah";
+
 
   # encode the file content in nix configuration file directly
   # home.file.".xxx".text = ''
@@ -155,7 +156,7 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "24.05";
+  home.stateVersion = lib.mkDefault "24.05";
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
