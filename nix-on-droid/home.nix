@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, rootPath, ... }:
+{ config, lib, pkgs, inputs, homeManagerLoadout, rootPath, ... }:
 {
   home.stateVersion = lib.mkForce "23.11";
   home.username = lib.mkForce "nix-on-droid";
