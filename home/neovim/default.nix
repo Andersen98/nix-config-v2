@@ -37,8 +37,6 @@ in
       curl
     ];
     plugins = with pkgs.vimPlugins; [
-      tokyonight-nvim
-      kanagawa-nvim
       neorg-telescope
       {
         plugin = neorg;
@@ -71,15 +69,6 @@ in
           }
         '';
         type = "lua";
-      }
-      {
-        plugin = (
-          fromGitHub {
-            repo = "nix-community/tree-sitter-nix";
-            rev = "b3cda619248e7dd0f216088bd152f59ce0bbe488";
-            ref = "master";
-          }
-        );
       }
       zen-mode-nvim
       {

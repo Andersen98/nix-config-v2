@@ -1,10 +1,14 @@
-debug-droid:
-    nix-on-droid switch --flake . 
-debug-lenovo-plasma5:
-    nixos-rebuild switch --flake .#lenovo-x270-plasma5 --show-trace --impure --use-remote-sudo
-debug-lenovo-sway:
-    nixos-rebuild switch --flake .#lenovo-x270-sway --show-trace --impure --use-remote-sudo
-debug-x570-plasma5:
-    nixos-rebuild switch --flake .#x570-plasma5 --show-trace --impure --use-remote-sudo
-debug-x570-sway:
-    nixos-rebuild switch --flake .#x570-sway --show-trace --impure --use-remote-sudo
+droid-a:
+    nix-on-droid switch --flake .#a
+lenovo-plasma5-d:
+    nixos-rebuild switch --flake .#lenovo-x270-plasma5-d --show-trace --impure --use-remote-sudo
+lenovo-sway-d:
+    nixos-rebuild switch --flake .#lenovo-x270-sway-d --show-trace --impure --use-remote-sudo
+x570-plasma5-d:
+    nixos-rebuild switch --flake .#x570-plasma5-d --show-trace --impure --use-remote-sudo
+x570-sway-d:
+    nixos-rebuild switch --flake .#x570-sway-d --show-trace --impure --use-remote-sudo
+pink-pc-sway-c:
+    nixos-rebuild switch --flake .#pink-pc-sway-c --show-trace --impure --use-remote-sudo
+pink-pc-plasma5-d:
+    nixos-rebuild switch --flake .#pink-pc-plasma5-d --show-trace --impure --use-remote-sudo

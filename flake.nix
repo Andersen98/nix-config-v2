@@ -60,20 +60,51 @@
           hostname = "x570";
           system = "x86_64-linux";
         }
+	{
+	  hostname = "pink-pc";
+	  system = "x86_64-linux";
+	}
       ];
-      allLoadouts = [
+      allDesktops = [
         "sway"
         "plasma5"
         "plasma6"
       ];
+      allHomeManagerLoadouts = [
+        "a"
+	"b"
+	"c"
+	"d"
+      ];
       allCombinations = lib.attrsets.cartesianProductOfSets {
         machine = allMachines;
-        loadout = allLoadouts;
+	homeManagerLoadout = allHomeManagerLoadouts;
+	desktop = allDesktops;
       };
-      genConfiguration =
-        { loadout, machine }:
+      genNixOnDroidConfiguration = {homeManagerLoadout, ...}: 
+	{ "${homeManagerLoadout}" = nix-on-droid.lib.nixOnDroidConfiguration {
+	  modules = [ ./nix-on-droid ];
+	  extraSpecialArgs = {
+	    inherit inputs homeManagerLoadout;
+	    rootPath = ./.;
+	  };
+	  # Apply nix-on-droid overlay to nixpkgs
+	  pkgs = import nixpkgs {
+	    system = "aarch64-linux";
+	    overlays = [
+	      nix-on-droid.overlays.default
+	      inputs.neorg-overlay.overlays.default
+	      inputs.neovim-nightly-overlay.overlays.default
+	    ];
+	  };
+
+	  home-manager-path = home-manager.outPath;
+	};
+      };
+      genNixosConfiguration =
+        { desktop, homeManagerLoadout, machine }:
         {
-          "${machine.hostname}-${loadout}" = lib.nixosSystem {
+          "${machine.hostname}-${desktop}-${homeManagerLoadout}" = lib.nixosSystem {
             inherit (machine) system;
             modules = [
               {
@@ -109,17 +140,19 @@
               {
                 # given the users in this list the right to specify additional substituters via:
                 #    1. `nixConfig.substituters` in `flake.nix`
-                nix.settings.trusted-users = [ "hannah" ];
+                nix.settings.trusted-users = [ "hannah" "hannaha" ];
 
                 nix.settings = {
                   substituters = [
 
                     "https://cache.nixos.org"
+		    "https://nix-community.cachix.org"
                   ];
 
                   trusted-public-keys = [
                     # the default public key of cache.nixos.org, it's built-in, no need to add it here
                     "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+		    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
                   ];
                 };
               }
@@ -131,14 +164,13 @@
                 home-manager.extraSpecialArgs = {
                   inherit inputs;
                   inherit outputs;
-                  inherit loadout;
                   inherit machine;
                 };
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.hannah = ./home;
+                home-manager.users.hannah = (./. + "/home/${homeManagerLoadout}.nix");
               }
-              (./nixos + "/${loadout}.nix")
+              (./nixos + "/${desktop}.nix")
               (./hosts + "/${machine.hostname}")
             ];
             specialArgs = {
@@ -163,31 +195,11 @@
       #formatter =  inputs.nixfmt.packages.${system}; # nixpkgs.legacyPackages.${system}.alejandra);
     })
     // {
-      nixosConfigurations = lib.attrsets.mergeAttrsList (map genConfiguration allCombinations);
-      homeManagerModules = [ (import ./home) ];
-
       # Your custom packages and modifications, exported as overlays
       overlays = import ./overlays { inherit inputs; };
 
-      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-        modules = [ ./nix-on-droid ];
-        extraSpecialArgs = {
-	  inherit inputs;
-	  rootPath = ./.;
-	};
-        # Apply nix-on-droid overlay to nixpkgs
-        pkgs = import nixpkgs {
-          system = "aarch64-linux";
-          overlays = [
-            nix-on-droid.overlays.default
-	    inputs.neorg-overlay.overlays.default
-	    inputs.neovim-nightly-overlay.overlays.default
-	  ];
-        };
-
-        home-manager-path = home-manager.outPath;
-      };
-
+      nixosConfigurations = lib.attrsets.mergeAttrsList (map genNixosConfiguration allCombinations);
+      nixOnDroidConfigurations = lib.attrsets.mergeAttrsList (map genNixOnDroidConfiguration allCombinations);
     };
 
 }

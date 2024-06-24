@@ -1,4 +1,4 @@
-{ config, lib, pkgs, rootPath, inputs, ...}:
+{ config, lib, pkgs, homeManagerLoadout, rootPath, inputs, ...}:
 
 {
   environment.packages = with pkgs; [
@@ -43,6 +43,7 @@
     extraSpecialArgs = {
       inherit inputs;
       inherit rootPath;
+      inherit homeManagerLoadout;
     };
     config = ./home.nix;
     backupFileExtension = "hm-back";
