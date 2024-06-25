@@ -1,4 +1,4 @@
-{ pkgs,inputs, ... }:
+{ pkgs,lib, inputs, ... }:
 {
   imports = [
     ./plugins/telescope.nix
@@ -12,34 +12,43 @@
     viAlias = true;
     vimAlias = true;
     enable = true;
+    defaultEditor = true;
     extraLuaConfig = builtins.readFile ./extra-config.lua;
     package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+    extraLuaPackages = (ps: with ps; [ luarocks rocks-nvim ]);
     extraPackages = with pkgs; [
       gcc
       gnutar
+      luajit
       curl
+      cargo
+      gcc
+      git
+      gnumake
+    ];
+    extraWrapperArgs = [
+      "--prefix"
+      "PATH"
+      ":"
+      "${lib.makeBinPath [ 
+        pkgs.luajit
+        pkgs.luajitPackages.luarocks
+        pkgs.luajitPackages.rocks-nvim
+      ]}"
     ];
     plugins = with pkgs.vimPlugins; [
+      {
+        plugin = nvim-luadev;
+        type = "lua";
+        config = ''
+          vim.api.nvim_set_keymap('n', '<leader>lg', '<Plug>(Luadev-RunLine)', {noremap = false,})
+        '';
+      }
+      nvim-notify
       neorg-telescope
       {
         plugin = neorg;
-        config = ''
-          require("neorg").setup {
-             load = {
-               ["core.defaults"] = {},
-               ["core.concealer"] = {},
-               ["core.dirman"] = {
-                  config = {
-                    workspaces = {
-                      wiki = "~/neorg/wiki",
-                      playground = "~/neorg/playground",
-                    },
-                    default_workspace = "playground",
-                  },
-                }
-             }
-           }
-        '';
+        config = builtins.readFile ./plugins/neorg.lua;
         type = "lua";
       }
       {
@@ -47,6 +56,9 @@
         config = ''
           require("nvim-treesitter.configs").setup {
             highlight = {
+              enable = true,
+            },
+            indent = {
               enable = true,
             }
           }
