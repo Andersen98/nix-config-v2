@@ -4,7 +4,7 @@ require("neorg").setup {
         config = {
           hook = function(keybinds)
             keybinds.map("norg",
-            "n",keybinds.leader .. "l",
+            "n",keybinds.leader .. "lc",
             "<cmd>Neorg keybind all core.looking-glass.magnify-code-block<CR>")
           end,
         }

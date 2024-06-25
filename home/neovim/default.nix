@@ -22,6 +22,7 @@
       luajit
       curl
       cargo
+      (haskellPackages.ghcWithPackages (pkgs: with pkgs; [ cabal-install turtle ]))
       gcc
       git
       gnumake
