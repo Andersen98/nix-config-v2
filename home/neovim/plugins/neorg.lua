@@ -12,6 +12,12 @@ require("neorg").setup {
           end,
         }
       },
+    ["core.esupports.indent"] = {
+      config = {
+        format_on_enter = false,
+        format_on_escape = false,
+      },
+    },
      ["core.defaults"] = {},
      ["core.concealer"] = {},
      ["core.summary"] = {},
@@ -42,6 +48,3 @@ require("neorg").setup {
       },
    },
  }
-vim.wo.foldlevel = 99
-vim.wo.conceallevel = 2
-vim.opt.autochdir = true;

@@ -68,13 +68,6 @@
       }
       zen-mode-nvim
       {
-        plugin = neo-tree-nvim;
-        config = ''
-          vim.api.nvim_set_keymap('n', '<Leader>t', '<cmd>Neotree toggle<cr>', {desc = "Tree Toggle",})
-        '';
-        type = "lua";
-      }
-      {
         plugin = vimtex;
         config = builtins.readFile ./vimtex.vim;
       }
