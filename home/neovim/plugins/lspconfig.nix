@@ -6,6 +6,10 @@
       nil #nix lsp
       pyright
       haskell-language-server
+      (haskellPackages.ghcWithPackages (pkgs: with pkgs; [ cabal-install turtle ]))
+      icu
+      ncurses
+      zlib
     ];
     plugins = with pkgs.vimPlugins; [
 
@@ -13,7 +17,9 @@
         config = ''
           require('lspconfig').nil_ls.setup{}
           require('lspconfig').pyright.setup{}
-          require'lspconfig'.hls.setup{}
+          require('lspconfig')['hls'].setup{
+            filetypes = { 'haskell', 'lhaskell', 'cabal' },
+          }
           local lsp_mappings = {
           { 'gD', vim.lsp.buf.declaration },
           { 'gd', vim.lsp.buf.definition },
