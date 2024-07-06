@@ -37,7 +37,7 @@ output * bg /run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_19
 
 
 # class                 border          backgr.         text            indicator     child_border
-client.focused          $baseZeroEight  $baseZeroZero    $baseZeroEight  $baseZeroD    $baseZeroE
+client.focused          $baseZeroEight  $baseZeroZero   $baseZeroEight  $baseZeroD    $baseZeroE
 client.focused_inactive $baseZeroD      $baseZeroThree  $baseZeroZero   $baseZeroA    $baseZeroZero
 client.unfocused        $baseZeroSix    $baseZeroTwo    $baseZeroSeven  $baseZeroC    $baseZeroThree
 client.urgent           $baseZeroOne    $baseZeroF      $baseZeroZero   $baseZeroA    $baseZeroNine
