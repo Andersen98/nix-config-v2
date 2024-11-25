@@ -38,7 +38,7 @@
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
-  time.timeZone = "America/Denver";
+  time.timeZone = "America/New_York";
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
