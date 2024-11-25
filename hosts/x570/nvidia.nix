@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  # enable fbdev boot parameter for plasma6
+  boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
 
   # enable vulkan tools
   environment.systemPackages = [ pkgs.vulkan-tools ];
