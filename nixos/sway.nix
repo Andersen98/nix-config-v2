@@ -13,6 +13,7 @@ with lib;
     ./components/vscode.nix
     ./components/mk-fish-default.nix
     ./components/kbd.nix
+    ./components/pipewire-graphical.nix
     ./components/pipewire.nix
   ];
 

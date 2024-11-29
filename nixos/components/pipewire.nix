@@ -1,4 +1,3 @@
-{...}:
 {
   
   # rtkit is optional but recommended

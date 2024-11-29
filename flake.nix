@@ -107,6 +107,9 @@
           "${machine.hostname}-${desktop}-${homeManagerLoadout}" = lib.nixosSystem {
             inherit (machine) system;
             modules = [
+              (./nixos + "/${desktop}.nix")
+              (./hosts + "/${machine.hostname}")
+              ./nixos/components/plymouth.nix
               {
                 imports = [ <nixpkgs/nixos/modules/profiles/base.nix> ];
                 nixpkgs = {
@@ -173,8 +176,6 @@
                 home-manager.useUserPackages = true;
                 home-manager.users.hannah = (./. + "/home/${homeManagerLoadout}.nix");
               }
-              (./nixos + "/${desktop}.nix")
-              (./hosts + "/${machine.hostname}")
             ];
             specialArgs = {
               inherit

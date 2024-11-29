@@ -1,4 +1,3 @@
-{ self, nixpkgs, ... }:
 {
   imports = [
     ./components/plasma5.nix
@@ -6,8 +5,9 @@
     ./components/fhs.nix
     ./components/vscode.nix
     ./components/mk-fish-default.nix
-    ./components/steam.nix
     ./components/kbd.nix
+    ./components/pipewire-graphical.nix
+    ./components/pipewire.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
