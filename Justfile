@@ -1,5 +1,7 @@
 droid-a:
     nix-on-droid switch --flake .#a
+lenovo-other-e:
+  nixos-rebuild switch --flake .#lenovo-x270-other-e --show-trace --impure --use-remote-sudo
 lenovo-plasma5-d:
     nixos-rebuild switch --flake .#lenovo-x270-plasma5-d --show-trace --impure --use-remote-sudo
 lenovo-sway-d:

@@ -20,19 +20,21 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-on-droid = {
       url = "github:t184256/nix-on-droid/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-   # You can access packages and modules from different nixpkgs revs
-    # at the same time. Here's an working example:
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Also see the 'unstable-packages' overlay at 'overlays/default.nix'
     flake-utils.url = "github:numtide/flake-utils";
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nixfmt.url = "github:NixOS/nixfmt";
     nix-colors.url = "github:misterio77/nix-colors";
@@ -42,10 +44,10 @@
     {
       self,
       nixpkgs,
-      nixos-hardware,
       home-manager,
       flake-utils,
       nix-on-droid,
+      plasma-manager,
       ...
     }@inputs:
     let
@@ -69,12 +71,14 @@
         "sway"
         "plasma5"
         "plasma6"
+        "other"
       ];
       allHomeManagerLoadouts = [
         "a"
 	"b"
 	"c"
 	"d"
+        "e"
       ];
       allCombinations = lib.attrsets.cartesianProductOfSets {
         machine = allMachines;
@@ -120,7 +124,6 @@
                     # Add overlays your own flake exports (from overlays and pkgs dir):
                     outputs.overlays.additions
                     outputs.overlays.modifications
-                    outputs.overlays.unstable-packages
                     # You can also add overlays exported from other flakes:
                     # neovim-nightly-overlay.overlays.default
                     inputs.neorg-overlay.overlays.default
@@ -174,13 +177,14 @@
                 home-manager.backupFileExtension = "hm-bak";
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
+                home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+
                 home-manager.users.hannah = (./. + "/home/${homeManagerLoadout}.nix");
               }
             ];
             specialArgs = {
               inherit
                 machine
-                nixos-hardware
                 home-manager
                 inputs
                 ;
