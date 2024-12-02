@@ -80,7 +80,7 @@
 	"d"
         "e"
       ];
-      allCombinations = lib.attrsets.cartesianProductOfSets {
+      allCombinations = lib.attrsets.cartesianProduct {
         machine = allMachines;
 	homeManagerLoadout = allHomeManagerLoadouts;
 	desktop = allDesktops;

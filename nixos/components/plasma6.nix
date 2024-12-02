@@ -1,4 +1,3 @@
-{ self, pkgs, ... }:
 {
 
   services.xserver.enable = true;

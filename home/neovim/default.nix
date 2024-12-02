@@ -36,6 +36,10 @@
       ]}"
     ];
     plugins = with pkgs.vimPlugins; [
+      { plugin = mini-nvim;
+        type = "lua";
+        config = "require('mini.icons').setup()";
+      }
       {
         plugin = nvim-luadev;
         type = "lua";
